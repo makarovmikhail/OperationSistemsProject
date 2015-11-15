@@ -1,142 +1,65 @@
 #include <windows.h>
-#include <stdio.h>
+#include <crtdbg.h>
 #include <netfw.h>
+#include <objbase.h>
+#include <oleauto.h>
+#include <stdio.h>
 #include <iostream>
-
-#pragma comment( lib, "ole32.lib" )
-
-
-// Forward declarations
-HRESULT     WFCOMInitialize(INetFwPolicy2** ppNetFwPolicy2);
+#include <string>
 
 
-int __cdecl main()
+int main()
 {
-	using namespace std;
-	//system("netsh advfirewall set allprofiies state on");
+	int k = -1;
+	int choice = -1;
+	std::string s = "tmp";
+	std::string res = "netsh advfirewall set currentprofile logging filename \"";
+	
 
-	/////////////////////////////////////////////////////////////////
-	int k = -1;				//Переменная выбора
-	while (k != 0)			//Визуализация меню
+	while (k != 0)
 	{
-		cout << "__________________________________________" << endl;
-		cout << "Win Firewall config_______________________" << endl;
-		cout << "__________________________________________" << endl;
-		cout << "1. Firewall Off___________________________" << endl;
-		cout << "2. Firewall On____________________________" << endl;
-		cout << "3. Current config_________________________" << endl;
-		cout << "0. Exit___________________________________" << endl;
-		cout << "Yout chouse: ";
-		cin >> k;
-		cout << endl;
+		std::cout << "***\tWinFirewall configuration" << std::endl;
+		std::cout << "*********************************" << std::endl;
+
+		std::cout << "***\t1 - WinFirewall On" << std::endl;
+		std::cout << "***\t2 - WinFirewall Off" << std::endl;
+		std::cout << "***\t3 - WinFirewall Reset" << std::endl;
+		std::cout << "***\t4 - Change the path to save the logs" << std::endl;
+		std::cout << "***\t0 - EXIT" << std::endl << std::endl;
+
+		std::cin >> k;
+		std::cout << std::endl;
 		switch (k)
 		{
 		case 1:
-			system("netsh advfirewall set allprofiies state off");
+			system("netsh advfirewall set allprofiles state on");
 			break;
 		case 2:
-			system("netsh advfirewall set allprofiies state on");
+			system("netsh advfirewall set allprofiles state off");
 			break;
 		case 3:
-			system("netsh advfirewall firewall show rule name=all");
+			std::cout << "Sure? 1 - yes, any other - no" << std::endl;
+			if(std::cin >> choice)
+				if (choice == 1)
+				{
+					std::cout << "Are you sure? 1 - yes, any other - no" << std::endl;
+					std::cin >> choice;
+					if (choice == 1)
+					{
+						system("netsh advfirewall reset");
+					}
+				}
+				break;
+		case 4:
+			std::cout << "enter the new path: example(C:\\\temp\\\pfirewall.log)\nYour new path: ";
+			std::getline(std::cin, s);
+			res += s;
+			res += "\"";
+			std::cout << "\n" << res << "\n";
+			//Добавь команду netsh advfirewall set currentprofile logging filename «C:\temp\pfirewall.log»
 			break;
-		case 0:
-			system("exit");
-			break;
+
 		}
 	}
-	//////////////////////////////////////////////////////////////////
-	HRESULT hrComInit = S_OK;
-	HRESULT hr = S_OK;
-
-	INetFwPolicy2 *pNetFwPolicy2 = NULL;
-	///system("netsh advfirewall set allprofiies state off");
-
-	// Initialize COM.
-	hrComInit = CoInitializeEx(
-		0,
-		COINIT_APARTMENTTHREADED
-		);
-
-	// Ignore RPC_E_CHANGED_MODE; this just means that COM has already been
-	// initialized with a different mode. Since we don't care what the mode is,
-	// we'll just use the existing mode.
-	if (hrComInit != RPC_E_CHANGED_MODE)
-	{
-		if (FAILED(hrComInit))
-		{
-			printf("CoInitializeEx failed: 0x%08lx\n", hrComInit);
-			goto Cleanup;
-		}
-	}
-
-	// Retrieve INetFwPolicy2
-	hr = WFCOMInitialize(&pNetFwPolicy2);
-	if (FAILED(hr))
-	{
-		goto Cleanup;
-	}
-
-	// Disable Windows Firewall for the Domain profile
-	hr = pNetFwPolicy2->put_FirewallEnabled(NET_FW_PROFILE2_DOMAIN, FALSE);
-	if (FAILED(hr))
-	{
-		printf("put_FirewallEnabled failed for Domain: 0x%08lx\n", hr);
-		goto Cleanup;
-	}
-
-	// Disable Windows Firewall for the Private profile
-	hr = pNetFwPolicy2->put_FirewallEnabled(NET_FW_PROFILE2_PRIVATE, FALSE);
-	if (FAILED(hr))
-	{
-		printf("put_FirewallEnabled failed for Private: 0x%08lx\n", hr);
-		goto Cleanup;
-	}
-
-	// Disable Windows Firewall for the Public profile
-	hr = pNetFwPolicy2->put_FirewallEnabled(NET_FW_PROFILE2_PUBLIC, FALSE);
-	if (FAILED(hr))
-	{
-		printf("put_FirewallEnabled failed for Public: 0x%08lx\n", hr);
-		goto Cleanup;
-	}
-
-Cleanup:
-
-	// Release INetFwPolicy2
-	if (pNetFwPolicy2 != NULL)
-	{
-		pNetFwPolicy2->Release();
-	}
-
-	// Uninitialize COM.
-	if (SUCCEEDED(hrComInit))
-	{
-		CoUninitialize();
-	}
-
 	return 0;
-}
-
-
-// Instantiate INetFwPolicy2
-HRESULT WFCOMInitialize(INetFwPolicy2** ppNetFwPolicy2)
-{
-	HRESULT hr = S_OK;
-
-	hr = CoCreateInstance(
-		__uuidof(NetFwPolicy2),
-		NULL,
-		CLSCTX_INPROC_SERVER,
-		__uuidof(INetFwPolicy2),
-		(void**)ppNetFwPolicy2);
-
-	if (FAILED(hr))
-	{
-		printf("CoCreateInstance for INetFwPolicy2 failed: 0x%08lx\n", hr);
-		goto Cleanup;
-	}
-
-Cleanup:
-	return hr;
 }
