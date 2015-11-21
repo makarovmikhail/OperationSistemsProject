@@ -10,7 +10,7 @@
 
 int main()
 {
-	int k = -1;							//Choice menu var	//test
+	int k = -1;							//Choice menu var	
 	int choice = -1;					//sure var
 	std::string s = "tmp";				//string IN
 	std::string res = "netsh advfirewall set currentprofile logging filename \"";	//string result log
