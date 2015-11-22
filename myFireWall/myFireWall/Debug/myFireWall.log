@@ -1,0 +1,15 @@
+﻿Build started 22.11.2015 16:21:00.
+     1>Project "C:\Users\Вадим\documents\visual studio 2013\Projects\myFireWall\myFireWall\myFireWall.vcxproj" on node 2 (Build target(s)).
+     1>ResourceCompile:
+         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\rc.exe /D _DEBUG /D _UNICODE /D UNICODE /l"0x0419" /IDebug\ /nologo /fo"Debug\myFireWall.res" myFireWall.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Вадим\documents\visual studio 2013\Projects\myFireWall\Debug\myFireWall.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"C:\Users\Вадим\documents\visual studio 2013\Projects\myFireWall\Debug\myFireWall.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Вадим\documents\visual studio 2013\Projects\myFireWall\Debug\myFireWall.lib" /MACHINE:X86 Debug\myFireWall.res
+         Debug\MainDlg.obj
+         Debug\myFireWall.obj
+         Debug\stdafx.obj
+         myFireWall.vcxproj -> C:\Users\Вадим\documents\visual studio 2013\Projects\myFireWall\Debug\myFireWall.exe
+     1>Done Building Project "C:\Users\Вадим\documents\visual studio 2013\Projects\myFireWall\myFireWall\myFireWall.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.66
